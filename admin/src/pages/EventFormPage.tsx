@@ -1,6 +1,6 @@
 // firebase
 import { db } from "../firebase";
-import { collection, addDoc } from "firebase/firestore";
+// import { collection, addDoc } from "firebase/firestore";
 
 import Input from "../components/form/Input";
 import TextArea from "../components/form/TextArea";
@@ -9,18 +9,18 @@ const EventForm = () => {
   const addEvent = async () => {
     console.log("sending event");
 
-    try {
-      const docRef = await addDoc(collection(db, "events"), {
-        title: "My Event TEST",
-        date: "2026-04-30",
-        location: "KolkataDSD",
-        createdAt: new Date(),
-      });
+    // try {
+    //   const docRef = await addDoc(collection(db, "events"), {
+    //     title: "My Event TEST",
+    //     date: "2026-04-30",
+    //     location: "KolkataDSD",
+    //     createdAt: new Date(),
+    //   });
 
-      console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
+    //   console.log("Document written with ID: ", docRef.id);
+    // } catch (e) {
+    //   console.error("Error adding document: ", e);
+    // }
   };
 
   return (

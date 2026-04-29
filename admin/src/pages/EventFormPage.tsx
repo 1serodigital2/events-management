@@ -7,11 +7,13 @@ import TextArea from "../components/form/TextArea";
 
 const EventForm = () => {
   const addEvent = async () => {
+    console.log("sending event");
+
     try {
       const docRef = await addDoc(collection(db, "events"), {
-        title: "My Event",
+        title: "My Event TEST",
         date: "2026-04-30",
-        location: "Kolkata",
+        location: "KolkataDSD",
         createdAt: new Date(),
       });
 

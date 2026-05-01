@@ -1,33 +1,32 @@
 // firebase
-import { db } from "../firebase";
-// import { collection, addDoc } from "firebase/firestore";
+import { useMutation } from "@tanstack/react-query";
 
 import Input from "../components/form/Input";
 import TextArea from "../components/form/TextArea";
 
+interface formDataType {
+  data: object;
+}
 const EventForm = () => {
-  const addEvent = async () => {
-    console.log("sending event");
-
-    // try {
-    //   const docRef = await addDoc(collection(db, "events"), {
-    //     title: "My Event TEST",
-    //     date: "2026-04-30",
-    //     location: "KolkataDSD",
-    //     createdAt: new Date(),
-    //   });
-
-    //   console.log("Document written with ID: ", docRef.id);
-    // } catch (e) {
-    //   console.error("Error adding document: ", e);
-    // }
+  const addEvent = async (event: any) => {
+    event.preventDefault();
+    // const formData = Object.entries(data);
+    console.log("formData", event);
+    // const name = formData.get("name");
   };
+
+  // const {mutate} = useMutation({
+  //   mutationFn: () => addEvent({data})
+  // })
 
   return (
     <>
       <h1 className="pb-5">Add new event</h1>
-      <button onClick={addEvent}>testing btn</button>
-      <form action="" className="bg-[#e2e8f0] py-5 px-8 rounded-2xl w-125">
+      {/* <button onClick={addEvent}>testing btn</button> */}
+      <form
+        onSubmit={addEvent}
+        className="bg-[#e2e8f0] py-5 px-8 rounded-2xl w-125"
+      >
         <div className="py-2 flex-col flex">
           <Input label="Event name" name="event-name" required />
         </div>

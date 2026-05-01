@@ -1,6 +1,6 @@
-import { Outlet } from "react-router-dom"
+import { Outlet } from "react-router-dom";
 
-import Header from "../components/layout/Header"
+import Header from "../components/layout/Header";
 
 const RootLayout = () => {
   return (
@@ -9,8 +9,8 @@ const RootLayout = () => {
       <main className="p-10">
         <Outlet />
       </main>
-    </ div>
-  )
-}
+    </div>
+  );
+};
 
 export default RootLayout;

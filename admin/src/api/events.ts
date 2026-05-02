@@ -4,7 +4,13 @@ import { db } from "../firebase"; // Assuming you have your db instance exported
 
 export const queryClient = new QueryClient();
 
-export const createEvent = async (eventData) => {
+interface formType {
+  name: string;
+  location: string;
+  date: string;
+  description: string;
+}
+export const createEvent = async (eventData): formType => {
   try {
     const docRef = await addDoc(collection(db, "events"), eventData);
     console.log("Document written with ID: ", docRef.id);

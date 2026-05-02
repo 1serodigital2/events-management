@@ -1,30 +1,49 @@
 // firebase
 import { useMutation } from "@tanstack/react-query";
 
+import { createEvent } from "../api/events";
+
+// utils
 import Input from "../components/form/Input";
 import TextArea from "../components/form/TextArea";
 
-interface formDataType {
-  data: object;
-}
+// interface formDataType {
+//   data: object;
+// }
 const EventForm = () => {
-  const addEvent = async (event: any) => {
-    event.preventDefault();
-    // const formData = Object.entries(data);
-    console.log("formData", event);
-    // const name = formData.get("name");
-  };
+  const { mutate } = useMutation({
+    mutationFn: createEvent,
+  });
 
-  // const {mutate} = useMutation({
-  //   mutationFn: () => addEvent({data})
-  // })
+  const formHandler = async (event) => {
+    event.preventDefault();
+    try {
+      const formData = new FormData(event.target);
+
+      const name = formData.get("event-name");
+      const location = formData.get("location");
+      const date = formData.get("date");
+      const description = formData.get("description");
+
+      const eventDetail = {
+        name,
+        location,
+        date,
+        description,
+      };
+
+      mutate(eventDetail);
+
+      console.log("eventDetail", eventDetail);
+    } catch (error) {}
+  };
 
   return (
     <>
       <h1 className="pb-5">Add new event</h1>
       {/* <button onClick={addEvent}>testing btn</button> */}
       <form
-        onSubmit={addEvent}
+        onSubmit={formHandler}
         className="bg-[#e2e8f0] py-5 px-8 rounded-2xl w-125"
       >
         <div className="py-2 flex-col flex">
@@ -37,7 +56,7 @@ const EventForm = () => {
           <Input label="Event date" name="date" type="date" />
         </div>
         <div className="py-2 flex-col flex mb-5">
-          <TextArea label="Event description" name="date" />
+          <TextArea label="Event description" name="description" />
         </div>
         <button className="cursor-pointer dark:bg-gray-800 dark:text-white py-2 px-5 rounded">
           Submit

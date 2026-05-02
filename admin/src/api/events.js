@@ -1,7 +1,10 @@
+import { QueryClient } from "@tanstack/react-query";
 import { collection, addDoc } from "firebase/firestore";
-import { db } from "./firebase"; // Assuming you have your db instance exported from a firebase.js file
+import { db } from "../firebase"; // Assuming you have your db instance exported from a firebase.js file
 
-export const addEvent = async (eventData) => {
+export const queryClient = new QueryClient();
+
+export const createEvent = async (eventData) => {
   try {
     const docRef = await addDoc(collection(db, "events"), eventData);
     console.log("Document written with ID: ", docRef.id);

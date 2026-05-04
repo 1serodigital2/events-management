@@ -10,7 +10,7 @@ interface formType {
   date: string;
   description: string;
 }
-export const createEvent = async (eventData): formType => {
+export const createEvent = async (eventData: formType) => {
   try {
     const docRef = await addDoc(collection(db, "events"), eventData);
     console.log("Document written with ID: ", docRef.id);

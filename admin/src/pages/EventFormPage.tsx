@@ -15,15 +15,16 @@ const EventForm = () => {
     mutationFn: createEvent,
   });
 
-  const formHandler = async (event) => {
+  const formHandler = async (event: React.SubmitEvent) => {
     event.preventDefault();
     try {
-      const formData = new FormData(event.target);
+      const form = event.target as HTMLFormElement;
+      const formData = new FormData(form);
 
-      const name = formData.get("event-name");
-      const location = formData.get("location");
-      const date = formData.get("date");
-      const description = formData.get("description");
+      const name = formData.get("event-name")?.toString() || "";
+      const location = formData.get("location")?.toString() || "";
+      const date = formData.get("date"?.toString() || "")?.toString() || "";
+      const description = formData.get("description")?.toString() || "";
 
       const eventDetail = {
         name,
@@ -33,8 +34,6 @@ const EventForm = () => {
       };
 
       mutate(eventDetail);
-
-      console.log("eventDetail", eventDetail);
     } catch (error) {}
   };
 

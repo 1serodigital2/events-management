@@ -1,1 +1,7 @@
-{ "compilerOptions": { "jsx": "react-jsx", "strict": true } }
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "strict": true
+  },
+  "include": ["src"]
+}

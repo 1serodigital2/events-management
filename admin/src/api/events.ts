@@ -5,6 +5,7 @@ import {
   getDocs,
   deleteDoc,
   doc,
+  getDoc,
 } from "firebase/firestore";
 import { db } from "../firebase"; // Assuming you have your db instance exported from a firebase.js file
 
@@ -13,7 +14,7 @@ import { EventType, FormType } from "../types/event";
 
 export const queryClient = new QueryClient();
 
-export const createEvent = async (eventData) => {
+export const createEvent = async (eventData: FormType) => {
   try {
     const formattedEventData: FormType = {
       name: eventData.name,
@@ -54,7 +55,7 @@ export const getEvents = async (): Promise<EventType[]> => {
   }
 };
 
-export const deleteEvent = async (id) => {
+export const deleteEvent = async (id: string) => {
   try {
     if (!id) {
       throw new Error("Event id is empty");
@@ -66,3 +67,23 @@ export const deleteEvent = async (id) => {
     throw new Error("Failed to delete event");
   }
 };
+
+export const getEventDetail = async (id: string) => {
+  try{
+    if (!id) {
+      throw new Error("Event id is empty");
+    }
+    const docSnap = await getDoc(doc(db, "events", id));
+    if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      return docSnap.data();
+    } else {
+      // docSnap.data() will be undefined in this case
+      console.log("No such document!");
+    }
+  }catch(error){
+    console.error("unable to get event detail", error);
+    
+    throw new Error("Failed to fetch event detail")
+  }
+}

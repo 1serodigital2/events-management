@@ -9,6 +9,9 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 // api
 import { getEvents, deleteEvent, queryClient } from "../../api/events";
 
+// components
+import Alert from "../ui/alert";
+
 const EventsList = () => {
   const [message, setMessage] = useState<string | null>(null);
 
@@ -47,7 +50,7 @@ const EventsList = () => {
   };
 
   if (isLoading) {
-    return <p>Events are loading...</p>;
+    return <Alert type="loading" message="Events are loading..." />;
   }
 
   if (isError) {
@@ -57,16 +60,12 @@ const EventsList = () => {
   return (
     <>
       {/* alert messages */}
-      {isPending && (
-        <div className="bg-blue-300 p-4 rounded mb-4">Deleting event...</div>
-      )}
+      {isPending && <Alert type="info" message="Deleting event..." />}
 
-      {message && (
-        <div className="bg-green-300 p-4 rounded mb-4">{message}</div>
-      )}
+      {message && <Alert message={message} />}
 
-      {data.length <= 0 ? (
-        <div className="bg-orange-500 p-4 rounded mb-4">Please add event</div>
+      {!data || data.length <= 0 ? (
+        <Alert type="info" message="Please add event" />
       ) : (
         <div className="relative overflow-x-auto bg-neutral-primary-soft shadow-xs rounded-base border border-default rounded">
           <table className="w-full text-sm text-left rtl:text-right text-body">

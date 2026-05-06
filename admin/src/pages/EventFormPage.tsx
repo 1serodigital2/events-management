@@ -1,3 +1,6 @@
+// react hooks
+import { useState } from "react";
+
 // firebase
 import { useMutation } from "@tanstack/react-query";
 
@@ -7,10 +10,18 @@ import { createEvent } from "../api/events";
 import Input from "../components/form/Input";
 import TextArea from "../components/form/TextArea";
 
-// interface formDataType {
-//   data: object;
-// }
+// types
+import { FormType } from "../types/event";
+import { log } from "firebase/firestore/lite/pipelines";
+
+const initFormData: FormType = {
+  name: "",
+  location: "",
+  date: "",
+  description: "",
+};
 const EventForm = () => {
+  const [formInputs, setFormInputs] = useState<FormType>(initFormData);
   const { mutate } = useMutation({
     mutationFn: createEvent,
   });
@@ -18,13 +29,10 @@ const EventForm = () => {
   const formHandler = async (event: React.SubmitEvent) => {
     event.preventDefault();
     try {
-      const form = event.target as HTMLFormElement;
-      const formData = new FormData(form);
-
-      const name = formData.get("event-name")?.toString() || "";
-      const location = formData.get("location")?.toString() || "";
-      const date = formData.get("date"?.toString() || "")?.toString() || "";
-      const description = formData.get("description")?.toString() || "";
+      const name = formInputs.name?.toString() || "";
+      const location = formInputs.location?.toString() || "";
+      const date = formInputs.date?.toString() || "";
+      const description = formInputs.description?.toString() || "";
 
       const eventDetail = {
         name,
@@ -37,6 +45,19 @@ const EventForm = () => {
     } catch (error) {}
   };
 
+  const handleFieldInput = (name: string, value: string) => {
+    if (!value) return;
+
+    setFormInputs((prevStateData: FormType) => {
+      return {
+        ...prevStateData,
+        [name]: value,
+      };
+    });
+
+    console.log("formInputs", formInputs);
+  };
+
   return (
     <>
       <h1 className="pb-5">Add new event</h1>
@@ -46,16 +67,34 @@ const EventForm = () => {
         className="bg-[#e2e8f0] py-5 px-8 rounded-2xl w-125"
       >
         <div className="py-2 flex-col flex">
-          <Input label="Event name" name="event-name" required />
+          <Input
+            label="Event name"
+            name="name"
+            required
+            handleFieldInput={handleFieldInput}
+          />
         </div>
         <div className="py-2 flex-col flex">
-          <Input label="Event location" name="location" />
+          <Input
+            label="Event location"
+            name="location"
+            handleFieldInput={handleFieldInput}
+          />
         </div>
         <div className="py-2 flex-col flex">
-          <Input label="Event date" name="date" type="date" />
+          <Input
+            label="Event date"
+            name="date"
+            type="date"
+            handleFieldInput={handleFieldInput}
+          />
         </div>
         <div className="py-2 flex-col flex mb-5">
-          <TextArea label="Event description" name="description" />
+          <TextArea
+            label="Event description"
+            name="description"
+            handleFieldInput={handleFieldInput}
+          />
         </div>
         <button className="cursor-pointer dark:bg-gray-800 dark:text-white py-2 px-5 rounded">
           Submit

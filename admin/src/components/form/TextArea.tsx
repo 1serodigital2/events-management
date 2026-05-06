@@ -1,6 +1,11 @@
 import { InputType } from "./Input";
 
-const TextArea = ({ label, name, required = false }: InputType) => {
+const TextArea = ({
+  label,
+  name,
+  required = false,
+  handleFieldInput,
+}: InputType) => {
   return (
     <>
       <label htmlFor="">{label}</label>
@@ -9,6 +14,7 @@ const TextArea = ({ label, name, required = false }: InputType) => {
         id=""
         required={required}
         className="border border-[#94a3b8] rounded"
+        onChange={(e) => handleFieldInput(name, e.target.value)}
       ></textarea>
     </>
   );

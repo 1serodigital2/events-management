@@ -6,7 +6,7 @@ export interface EventType {
   description?: string;
 }
 
-export interface formType {
+export interface FormType {
   name: string;
   location: string;
   date: string;

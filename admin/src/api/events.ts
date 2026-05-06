@@ -9,13 +9,19 @@ import {
 import { db } from "../firebase"; // Assuming you have your db instance exported from a firebase.js file
 
 // types
-import { EventType, formType } from "../types/event";
+import { EventType, FormType } from "../types/event";
 
 export const queryClient = new QueryClient();
 
-export const createEvent = async (eventData: formType) => {
+export const createEvent = async (eventData) => {
   try {
-    const docRef = await addDoc(collection(db, "events"), eventData);
+    const formattedEventData: FormType = {
+      name: eventData.name,
+      location: eventData.location,
+      date: eventData.date,
+      description: eventData.description,
+    };
+    const docRef = await addDoc(collection(db, "events"), formattedEventData);
     console.log("Document written with ID: ", docRef.id);
     // You can return the ID or the whole docRef if needed
     return docRef.id;
@@ -54,6 +60,7 @@ export const deleteEvent = async (id) => {
       throw new Error("Event id is empty");
     }
     const response = await deleteDoc(doc(db, "events", id));
+    console.log("delete response", response);
   } catch (error) {
     console.error("Error deleting event", error);
     throw new Error("Failed to delete event");

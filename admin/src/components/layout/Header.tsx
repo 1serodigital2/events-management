@@ -12,7 +12,7 @@ const Header = () => {
   };
 
   return (
-    <aside className="p-10 dark:bg-gray-800 w-2xs">
+    <aside className="p-10 dark:bg-gray-800 w-2xs max-sm">
       <ul>
         <li className="dark:text-white py-2">
           <NavLink to="./">Home</NavLink>

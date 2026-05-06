@@ -26,7 +26,7 @@ const EventsList = () => {
   }
 
   return (
-    <table>
+    <table className="table-auto">
       <thead>
         <tr>
           <th>SL No</th>
@@ -39,7 +39,7 @@ const EventsList = () => {
       <tbody>
         {data &&
           data.map((event) => (
-            <tr>
+            <tr key={event.id}>
               <td>01</td>
               <td>{event.name}</td>
             </tr>

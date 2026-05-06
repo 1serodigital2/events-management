@@ -32,7 +32,7 @@ export interface EventType {
 }
 export const getEvents = async () => {
   try {
-    const querySnapshot = await getDocs(collection(db, "event"));
+    const querySnapshot = await getDocs(collection(db, "events"));
     const data = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),

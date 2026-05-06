@@ -5,6 +5,7 @@ import Events from "./pages/EventsPage";
 import RootLayout from "./layouts/RootLayout";
 import HomePage from "./pages/HomePage";
 import EventFormPage from "./pages/EventFormPage";
+import EventDetailPage from "./pages/EventDetailPage";
 
 import { QueryClientProvider } from "@tanstack/react-query";
 
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "events", element: <Events /> },
       { path: "events/new", element: <EventFormPage /> },
+      { path: "events/:id", element: <EventDetailPage /> },
     ],
   },
 ]);

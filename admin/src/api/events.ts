@@ -1,15 +1,18 @@
 import { QueryClient } from "@tanstack/react-query";
-import { collection, addDoc, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import { db } from "../firebase"; // Assuming you have your db instance exported from a firebase.js file
+
+// types
+import { EventType, formType } from "../types/event";
 
 export const queryClient = new QueryClient();
 
-interface formType {
-  name: string;
-  location: string;
-  date: string;
-  description: string;
-}
 export const createEvent = async (eventData: formType) => {
   try {
     const docRef = await addDoc(collection(db, "events"), eventData);
@@ -23,28 +26,36 @@ export const createEvent = async (eventData: formType) => {
   }
 };
 
-export interface EventType {
-  id: string;
-  name: string;
-  location: string;
-  date: string;
-  description: string;
-}
-export const getEvents = async () => {
+export const getEvents = async (): Promise<EventType[]> => {
   try {
     const querySnapshot = await getDocs(collection(db, "events"));
-    const data = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as EventType[];
 
-    return data;
-  } catch (e) {
-    console.error("Error getting events: ", e);
-    // You can re-throw the error or handle it gracefully
-    throw e;
+    return querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+
+      return {
+        id: doc.id,
+        name: data.name,
+        location: data.location,
+        date: data.date,
+        description: data.description,
+      };
+    });
+  } catch (error) {
+    console.error("Error getting events:", error);
+
+    throw new Error("Failed to fetch events");
   }
 };
 
-// Example usage in a React component or other part of your app:
-// addEvent({ name: "My Event", date: "2026-06-01" });
+export const deleteEvent = async (id) => {
+  try {
+    if (!id) {
+      throw new Error("Event id is empty");
+    }
+    const response = await deleteDoc(doc(db, "events", id));
+  } catch (error) {
+    console.error("Error deleting event", error);
+    throw new Error("Failed to delete event");
+  }
+};

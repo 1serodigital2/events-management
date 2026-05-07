@@ -5,6 +5,7 @@ const TextArea = ({
   name,
   required = false,
   handleFieldInput,
+  value,
 }: InputType) => {
   return (
     <>
@@ -15,6 +16,7 @@ const TextArea = ({
         required={required}
         className="border border-[#94a3b8] rounded"
         onChange={(e) => handleFieldInput(name, e.target.value)}
+        value={value}
       ></textarea>
     </>
   );

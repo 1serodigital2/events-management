@@ -4,6 +4,7 @@ export interface InputType {
   type?: string;
   required?: boolean;
   handleFieldInput: (name: string, value: string) => void;
+  value: string;
 }
 
 const Input = ({
@@ -12,6 +13,7 @@ const Input = ({
   type = "text",
   required = false,
   handleFieldInput,
+  value,
 }: InputType) => {
   return (
     <>
@@ -22,6 +24,7 @@ const Input = ({
         className="border border-[#94a3b8] rounded"
         required={required}
         onChange={(e) => handleFieldInput(name, e.target.value)}
+        value={value}
       />
     </>
   );

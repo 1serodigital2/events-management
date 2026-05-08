@@ -98,9 +98,12 @@ const EventsList = () => {
                       View
                     </NavLink>
 
-                    <button className="cursor-pointer btn-primary mr-4 text-blue-600">
+                    <NavLink
+                      to={`${event.id}/edit`}
+                      className="cursor-pointer btn-primary mr-4 text-blue-600"
+                    >
                       Edit
-                    </button>
+                    </NavLink>
 
                     <button
                       disabled={isPending}

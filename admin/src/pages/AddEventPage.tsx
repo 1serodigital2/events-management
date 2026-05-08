@@ -6,16 +6,13 @@ import { useMutation } from "@tanstack/react-query";
 
 import { createEvent, queryClient } from "../api/events";
 
-// utils
-import Input from "../components/form/Input";
-import TextArea from "../components/form/TextArea";
-
 // types
 import { FormType } from "../types/event";
 import { log } from "firebase/firestore/lite/pipelines";
 
 // components
 import Alert, { AlertProps } from "../components/ui/alert";
+import EventForm from "../components/form/EventForm";
 
 const initFormData: FormType = {
   name: "",
@@ -24,10 +21,9 @@ const initFormData: FormType = {
   description: "",
 };
 
-const EventForm = () => {
+const AddEvent = () => {
   const [formInputs, setFormInputs] = useState<FormType>(initFormData);
   const [formSubmitResponse, setFormSubmitResponse] = useState<AlertProps>({
-    type: "",
     message: "",
   });
   const { mutate, isPending } = useMutation({
@@ -46,7 +42,7 @@ const EventForm = () => {
       });
 
       setTimeout(() => {
-        setFormSubmitResponse("");
+        setFormSubmitResponse({ message: "" });
       }, 3000);
     },
     onError: () => {
@@ -55,7 +51,7 @@ const EventForm = () => {
         message: "Failed to add event",
       });
       setTimeout(() => {
-        setFormSubmitResponse("");
+        setFormSubmitResponse({ message: "" });
       }, 3000);
     },
   });
@@ -86,8 +82,6 @@ const EventForm = () => {
         [name]: value,
       };
     });
-
-    console.log("formInputs", formInputs);
   };
 
   return (
@@ -99,53 +93,14 @@ const EventForm = () => {
           message={formSubmitResponse.message}
         />
       )}
-      <form
-        onSubmit={formHandler}
-        className="bg-[#e2e8f0] py-5 px-8 rounded-2xl w-125"
-      >
-        <div className="py-2 flex-col flex">
-          <Input
-            label="Event name"
-            name="name"
-            required
-            handleFieldInput={handleFieldInput}
-            value={formInputs?.name || ""}
-          />
-        </div>
-        <div className="py-2 flex-col flex">
-          <Input
-            label="Event location"
-            name="location"
-            handleFieldInput={handleFieldInput}
-            value={formInputs?.location || ""}
-          />
-        </div>
-        <div className="py-2 flex-col flex">
-          <Input
-            label="Event date"
-            name="date"
-            type="date"
-            handleFieldInput={handleFieldInput}
-            value={formInputs?.date || ""}
-          />
-        </div>
-        <div className="py-2 flex-col flex mb-5">
-          <TextArea
-            label="Event description"
-            name="description"
-            handleFieldInput={handleFieldInput}
-            value={formInputs?.description || ""}
-          />
-        </div>
-        <button
-          className={`${isPending ? "bg-gray-400" : "dark:bg-gray-800 cursor-pointer"} dark:text-white py-2 px-5 rounded`}
-          disabled={isPending}
-        >
-          {isPending ? "Submitting..." : "Submit"}
-        </button>
-      </form>
+      <EventForm
+        formHandler={formHandler}
+        handleFieldInput={handleFieldInput}
+        formInputs={formInputs}
+        isPending={isPending}
+      />
     </>
   );
 };
 
-export default EventForm;
+export default AddEvent;

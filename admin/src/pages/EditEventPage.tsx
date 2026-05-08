@@ -42,7 +42,7 @@ const EditEvent = () => {
     mutationFn: updateEventDetail,
     mutationKey: ["events", id],
     onSuccess: () => {
-      setFormInputs(initFormData);
+      setFormInputs(formInputs);
 
       setFormSubmitResponse({
         type: "success",

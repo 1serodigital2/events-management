@@ -89,7 +89,11 @@ export const getEventDetail = async (id: string) => {
   }
 };
 
-export const updateEventDetail = async (id: string, values: FormType) => {
+interface updateEventProps {
+  id: string;
+  values: object;
+}
+export const updateEventDetail = async ({ id, values }: updateEventProps) => {
   try {
     const eventRef = doc(db, "events", id);
 

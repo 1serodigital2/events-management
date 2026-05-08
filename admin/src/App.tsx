@@ -12,6 +12,8 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./api/events.js";
 import EditEvent from "./pages/EditEventPage";
 
+import { eventDetailsLoader } from "./api/events.js";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -21,7 +23,11 @@ const router = createBrowserRouter([
       { path: "events", element: <Events /> },
       { path: "events/:id", element: <EventDetailPage /> },
       { path: "events/new", element: <AddEventPage /> },
-      { path: "events/:id/edit", element: <EditEvent /> },
+      {
+        path: "events/:id/edit",
+        element: <EditEvent />,
+        loader: eventDetailsLoader,
+      },
     ],
   },
 ]);

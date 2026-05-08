@@ -2,44 +2,51 @@
 import { useState } from "react";
 
 // reactRouter
-import { useParams } from "react-router-dom";
+import { useParams, useLoaderData } from "react-router-dom";
 
 // firebase
 import { useMutation } from "@tanstack/react-query";
 
-import { createEvent, queryClient } from "../api/events";
+import { queryClient, updateEventDetail } from "../api/events";
 
 // types
 import { FormType } from "../types/event";
-import { log } from "firebase/firestore/lite/pipelines";
+
+// api
+import { getEventDetail } from "../api/events";
 
 // components
 import Alert, { AlertProps } from "../components/ui/alert";
 import EventForm from "../components/form/EventForm";
 
-const initFormData: FormType = {
-  name: "",
-  location: "",
-  date: "",
-  description: "",
-};
-
 const EditEvent = () => {
   const params = useParams();
   const id = params.id;
+
+  const data = useLoaderData();
+
+  console.log("useLoaderData", data);
+
+  const initFormData: FormType = {
+    name: data?.name || "",
+    location: data?.location || "",
+    date: data?.date || "",
+    description: data?.description || "",
+  };
 
   const [formInputs, setFormInputs] = useState<FormType>(initFormData);
   const [formSubmitResponse, setFormSubmitResponse] = useState<AlertProps>({
     message: "",
   });
   const { mutate, isPending } = useMutation({
-    mutationFn: createEvent,
+    mutationFn: updateEventDetail,
+    mutationKey: ["events", id],
     onSuccess: () => {
       setFormInputs(initFormData);
 
       setFormSubmitResponse({
         type: "success",
-        message: "Event added successfully",
+        message: "Event udpated successfully",
       });
 
       queryClient.invalidateQueries({
@@ -54,7 +61,7 @@ const EditEvent = () => {
     onError: () => {
       setFormSubmitResponse({
         type: "error",
-        message: "Failed to add event",
+        message: "Failed to udpate event",
       });
       setTimeout(() => {
         setFormSubmitResponse({ message: "" });
@@ -77,7 +84,8 @@ const EditEvent = () => {
         description,
       };
 
-      mutate(eventDetail);
+      console.log("update event detail for " + id, eventDetail);
+      mutate({ id, values: eventDetail });
     } catch (error) {}
   };
 

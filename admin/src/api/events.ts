@@ -6,6 +6,7 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase"; // Assuming you have your db instance exported from a firebase.js file
 
@@ -69,7 +70,7 @@ export const deleteEvent = async (id: string) => {
 };
 
 export const getEventDetail = async (id: string) => {
-  try{
+  try {
     if (!id) {
       throw new Error("Event id is empty");
     }
@@ -81,9 +82,42 @@ export const getEventDetail = async (id: string) => {
       // docSnap.data() will be undefined in this case
       console.log("No such document!");
     }
-  }catch(error){
+  } catch (error) {
     console.error("unable to get event detail", error);
-    
-    throw new Error("Failed to fetch event detail")
+
+    throw new Error("Failed to fetch event detail");
   }
+};
+
+export const updateEventDetail = async (id: string, values: FormType) => {
+  try {
+    const eventRef = doc(db, "events", id);
+
+    await updateDoc(eventRef, {
+      ...values,
+    });
+
+    return true;
+  } catch (error) {
+    console.error("unable to update event", error);
+    throw new Error("Error while updating event");
+  }
+};
+
+interface EventDetailsLoaderProps {
+  request: Request;
+  params: {
+    id?: string;
+  };
 }
+export const eventDetailsLoader = async ({
+  request,
+  params,
+}: EventDetailsLoaderProps) => {
+  try {
+    const resData = await getEventDetail(params.id);
+    return resData;
+  } catch (error) {
+    console.error("Unable to get event detail from loader", error);
+  }
+};
